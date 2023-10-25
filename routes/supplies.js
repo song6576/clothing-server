@@ -37,15 +37,15 @@ router.post('/suppliesUser',async(req,res) => {
 
 // 根据条件查询
 router.post('/reqClothingUser', async(req, res) => {
-  let clothingUser = await Supplies.findAll({
-    where: {//获取id在[1,2,3]中并且age=20的
+  let result = await Supplies.findAll({
+    where: {
       username: req.query.username,
     },
-    attributes: ['username', 'suppliesName', 'count', 'type', 'createTime'], //允许显示的字段
+    attributes: ['id','username', 'suppliesName', 'count', 'type', 'createTime'], //允许显示的字段
   });
   res.send({
     code: 200,
-    clothingUser
+    result
   })
 })
 

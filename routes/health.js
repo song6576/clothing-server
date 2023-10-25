@@ -35,7 +35,7 @@ router.post('/healthUser', async (req, res) => {
 // 查询单个打卡信息
 router.post('/reqClockUser', async(req, res) => {
   let users = await Health.findAll({
-    where: {//获取id在[1,2,3]中并且age=20的
+    where: {
       createTime: req.query.time,
     },
     attributes: ['name', 'integral', 'createTime'], //允许显示的字段
