@@ -46,6 +46,20 @@ router.post('/reqClockUser', async(req, res) => {
   })
 })
 
+// 查询单个积分信息
+router.post('/reqIntegralUser', async(req, res) => {
+  let result = await Health.findAll({
+    where: {
+      name: req.query.name,
+    },
+    attributes: ['name', 'integral', 'createTime'], //允许显示的字段
+  });
+  res.send({
+    code: 200,
+    result
+  })
+})
+
 // 删除信息
 router.post('/delHealth', (req, res) => {
   Health.findByPk(req.query.id)

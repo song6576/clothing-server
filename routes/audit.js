@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const Audit = require('../module/audit');
 
-// 添加物资审批信息
+// 添加服装审批信息
 router.post('/addAuditSupplies', async(req,res) => {
   const now = new Date()
   const content = await Audit.create({
@@ -20,14 +20,42 @@ router.post('/addAuditSupplies', async(req,res) => {
   res.send({ status:200, msg:'添加服装信息成功!', content})
 })
 
-// 查询所有物资申请审批
+// 查询所有服装申请审批
 router.post('/audits',(req,res) => {
   Audit.findAll().then( data => {
     res.send({status:200,msg:'信息查询成功!',data})
   })
 })
 
-// 删除物资信息审批
+// 通过分类查询服装信息
+router.post('/reqClothingType', async(req, res) => {
+  let result = await Audit.findAll({
+    where: {
+      type: req.query.type,
+    },
+    attributes: ['id','auditPeople','suppliesName', 'amount', 'type', 'createTime','text','status'], //允许显示的字段
+  });
+  res.send({
+    code: 200,
+    result
+  })
+})
+
+// 根据条件查询
+router.post('/reqClothingAuditUser', async(req, res) => {
+  let result = await Audit.findAll({
+    where: {
+      auditPeople: req.query.auditPeople,
+    },
+    attributes: ['id','auditPeople','suppliesName', 'amount', 'type', 'createTime','text','status'], //允许显示的字段
+  });
+  res.send({
+    code: 200,
+    result
+  })
+})
+
+// 删除服装信息审批
 router.post('/delAudit',(req,res) => {
   Audit.findByPk(req.query.id).then( id => {
     if(id) {
@@ -44,7 +72,7 @@ router.post('/delAudit',(req,res) => {
   .catch( err => res.send('error' + err))
 })
 
-// 修改物资审批信息
+// 修改服装审批信息
 router.post('/updateAudit',async(req,res) => {
   const now = new Date()
   const content = await Audit.findByPk(req.query.id).then( post => {

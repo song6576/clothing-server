@@ -36,7 +36,6 @@ router.post('/register',(req,res) => {
 
 // 登录接口
 router.post('/login',(req,res) => {
-  console.log("🚀 ~ file: index.js:39 ~ router.post ~ req,res:", req,res)
   User.findOne({where:{username: req.query.username,password: req.query.password}})
   .then( user => {
     // 查询用户
@@ -48,7 +47,8 @@ router.post('/login',(req,res) => {
           {
             username:req.query.username,
             password:req.query.password,
-            role:user.role
+            role:user.role,
+            iphone:user.iphone
           }
         })
       } else {
