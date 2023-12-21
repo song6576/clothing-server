@@ -3,7 +3,7 @@
  */
 const express = require('express');
 const router = express.Router();
-const Health = require('../module/health');
+const clock = require('../module/clock');
 
 // 打卡
 router.post('/addHealth', (req, res) => {
@@ -12,9 +12,9 @@ router.post('/addHealth', (req, res) => {
   var month = now.getMonth() + 1
   var date = now.getDate()
   var time = year + '-' + month + '-' + date;
-  Health.findAll({ where: { createTime: req.query.time} })
+  clock.findAll({ where: { createTime: req.query.time} })
     .then(async createTime => {
-      const healthUser = await Health.create({
+      const healthUser = await clock.create({
         name: req.query.name,
         integral: req.query.integral,
         createTime: time,
@@ -26,7 +26,7 @@ router.post('/addHealth', (req, res) => {
 
 // 查询所有信息
 router.post('/healthUser', async (req, res) => {
-  Health.findAll()
+  clock.findAll()
     .then(data => {
       res.send({ status: 200, msg: '查询信息成功!', data })
     })
@@ -34,7 +34,7 @@ router.post('/healthUser', async (req, res) => {
 
 // 查询单个打卡信息
 router.post('/reqClockUser', async(req, res) => {
-  let users = await Health.findAll({
+  let users = await clock.findAll({
     where: {
       createTime: req.query.time,
     },
@@ -48,7 +48,7 @@ router.post('/reqClockUser', async(req, res) => {
 
 // 查询单个积分信息
 router.post('/reqIntegralUser', async(req, res) => {
-  let result = await Health.findAll({
+  let result = await clock.findAll({
     where: {
       name: req.query.name,
     },
@@ -62,10 +62,10 @@ router.post('/reqIntegralUser', async(req, res) => {
 
 // 删除信息
 router.post('/delHealth', (req, res) => {
-  Health.findByPk(req.query.id)
+  clock.findByPk(req.query.id)
     .then(id => {
       if (id) {
-        Health.destroy({
+        clock.destroy({
           where: {
             id: req.query.id
           }

@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 const db = require('../utils/db');
 
 module.exports = db.sequelize.define(
-  'health',
+  'clock',
   {
     id: {
       type:Sequelize.INTEGER, // int类型

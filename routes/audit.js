@@ -10,6 +10,7 @@ router.post('/addAuditSupplies', async(req,res) => {
   const now = new Date()
   const content = await Audit.create({
     suppliesName: req.query.suppliesName,
+    clothNumber: req.query.clothNumber,
     amount: req.query.amount,
     auditPeople: req.query.auditPeople,
     type: req.query.type,
@@ -78,6 +79,7 @@ router.post('/updateAudit',async(req,res) => {
   const content = await Audit.findByPk(req.query.id).then( post => {
     post.update({
       suppliesName: req.query.suppliesName,
+      clothNumber: req.query.clothNumber,
       amount: req.query.amount,
       auditPeople: req.query.auditPeople,
       type: req.query.type,

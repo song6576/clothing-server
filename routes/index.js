@@ -4,6 +4,14 @@ const bcrypt = require('bcryptjs');
 const db = require('../utils/db')
 var router = express.Router();
 
+// 定义一个格式化响应的函数
+const formatResponse = (status, msg, data = null) => {
+  return {
+    status,
+    msg,
+    data
+  };
+};
 // 注册接口
 router.post('/register',(req,res) => {
   // console.log(res.json(req.query));
@@ -35,31 +43,38 @@ router.post('/register',(req,res) => {
 
 
 // 登录接口
-router.post('/login',(req,res) => {
-  User.findOne({where:{username: req.query.username,password: req.query.password}})
-  .then( user => {
-    // 查询用户
-    if(user) {
-      // 匹配密码
-      // bcrypt.compareSync(req.query.password,user.password)
-      if(req.query.password,user.password) {
-        res.send({status:200,msg:'登录成功',data:
-          {
-            username:req.query.username,
-            password:req.query.password,
-            role:user.role,
-            iphone:user.iphone
-          }
-        })
+router.get('/login', async (req, res) => {
+  const { username, password } = req.query;
+
+  try {
+    const user = await User.findOne({
+      where: {
+        username,
+        // password
+      },
+      attributes: ['role', 'iphone','password']
+    });
+
+    if (user) {
+      if (password === user.password) {
+        const data = {
+          username,
+          password,
+          role: user.role,
+          iphone: user.iphone
+        };
+        res.send(formatResponse(200, '登录成功', data));
       } else {
-        res.send({msg:'密码错误'})
+        res.send(formatResponse(400, '密码错误'));
       }
     } else {
-      res.status(400).json({error:"用户不存在"})
+      res.send(formatResponse(400, '用户不存在'));
     }
-  })
-  .catch( err => res.send("error:" + err))
-})
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(formatResponse(500, '服务器错误'));
+  }
+});
 
 // 查询所有用户表
 router.post('/user',async(req,res) => {

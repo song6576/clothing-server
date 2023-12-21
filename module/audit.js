@@ -17,6 +17,10 @@ module.exports = db.sequelize.define(
     suppliesName: {
       type:Sequelize.STRING, // 字符串
     },
+    // 服装编号
+    clothNumber: {
+      type: Sequelize.STRING, // 字符串
+    },
     // 服装数量
     amount: {
       type:Sequelize.INTEGER, // int类型
