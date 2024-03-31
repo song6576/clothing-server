@@ -6,20 +6,18 @@ var logger = require('morgan');
 
 // 系统用户
 var indexRouter = require('./routes/index');
-// 居民信息
-var residentsRouter = require('./routes/residents');
-// 物资管理
-var SuppliesRouter = require('./routes/supplies');
-// 物资申请审批管理
-var AuditRouter = require('./routes/audit');
-// 诊断记录
-var DiagnoseRouter = require('./routes/diagnose');
-// 疫苗接种
-var VaccineRouter = require('./routes/vaccine');
-// 健康管理
-var HealthRouter = require('./routes/health');
-// 风险地区管理
-var WarningRouter = require('./routes/warning');
+// 轮播图
+var carouselmapRouter = require('./routes/carouselmap');
+// 订单管理
+var OrderRouter = require('./routes/order');
+// 售后管理
+var afterSaleRouter = require('./routes/afterSale');
+// 商品库存
+var shopRouter = require('./routes/shop');
+// 财务管理
+var FinanceRouter = require('./routes/finance');
+// 头像
+var AvatarRouter = require('./routes/avatar');
 
 var app = express();
 
@@ -34,13 +32,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', residentsRouter);
-app.use('/', SuppliesRouter);
-app.use('/', AuditRouter);
-app.use('/', DiagnoseRouter);
-app.use('/', VaccineRouter);
-app.use('/', HealthRouter);
-app.use('/', WarningRouter)
+app.use('/', carouselmapRouter);
+app.use('/', AvatarRouter);
+app.use('/', OrderRouter);
+app.use('/', afterSaleRouter);
+app.use('/', shopRouter)
+app.use('/', FinanceRouter)
 // app.use('/login', loginRouter);
 // app.use('/register', registerRouter);
 // app.listen('8080')

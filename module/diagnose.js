@@ -1,6 +1,6 @@
 /**
  * 物资信息申请审批表
- * 创建一个audit.js文件,创建一个数据模型,规定参数，将构造好的模块抛出
+ * 创建一个order.js文件,创建一个数据模型,规定参数，将构造好的模块抛出
  */
 const Sequelize = require('sequelize');
 const db = require('../utils/db');

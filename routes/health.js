@@ -3,7 +3,7 @@
  */
 const express = require('express');
 const router = express.Router();
-const clock = require('../module/clock');
+const clock = require('../module/finance');
 
 // 打卡
 router.post('/addHealth', (req, res) => {
