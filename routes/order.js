@@ -14,26 +14,27 @@ router.post('/addOrder', async (req, res) => {
         amount: req.query.amount,
         account: req.query.auditPeople,
         payment: req.query.payment,
+        destory: req.query.destory,
         status: 0,
         createTime: now,
     })
     res.send({ code: 200, msg: '添加订单信息成功!', content })
 })
 
-// 查询所有服装申请审批
+// 查询所有订单信息
 router.post('/order', (req, res) => {
     Audit.findAll().then(data => {
         res.send({ code: 200, msg: '信息查询成功!', data })
     })
 })
 
-// 通过分类查询服装信息
+// 通过分类查询订单信息
 router.post('/reqClothingType', async (req, res) => {
     let result = await Audit.findAll({
         where: {
             type: req.query.type,
         },
-        attributes: ['id', 'auditPeople', 'suppliesName', 'amount', 'type', 'createTime', 'text', 'status'], //允许显示的字段
+        attributes: ['id', 'auditPeople', 'suppliesName','destory', 'amount', 'type', 'createTime', 'text', 'status'], //允许显示的字段
     });
     res.send({
         code: 200,
@@ -47,7 +48,7 @@ router.post('/reqClothingAuditUser', async (req, res) => {
         where: {
             auditPeople: req.query.auditPeople,
         },
-        attributes: ['id', 'auditPeople', 'suppliesName', 'amount', 'type', 'createTime', 'text', 'status'], //允许显示的字段
+        attributes: ['id', 'auditPeople', 'suppliesName', 'destory','amount', 'type', 'createTime', 'text', 'status'], //允许显示的字段
     });
     res.send({
         code: 200,
@@ -55,7 +56,7 @@ router.post('/reqClothingAuditUser', async (req, res) => {
     })
 })
 
-// 删除服装信息审批
+// 删除
 router.post('/delAudit', (req, res) => {
     Audit.findByPk(req.query.id).then(id => {
         if (id) {
@@ -72,12 +73,13 @@ router.post('/delAudit', (req, res) => {
         .catch(err => res.send('error' + err))
 })
 
-// 修改服装审批信息
+// 修改
 router.post('/updateAudit', async (req, res) => {
     const now = new Date()
     const content = await Audit.findByPk(req.query.id).then(post => {
         post.update({
             suppliesName: req.query.suppliesName,
+            destory: req.query.destory,
             clothNumber: req.query.clothNumber,
             amount: req.query.amount,
             auditPeople: req.query.auditPeople,

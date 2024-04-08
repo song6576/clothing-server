@@ -19,6 +19,9 @@ module.exports = db.sequelize.define(
         shappingName: {
             type: Sequelize.STRING, // 字符串
         },
+        destory: {
+            type: Sequelize.STRING, // 字符串
+        },
         amount: {
             type: Sequelize.INTEGER, // int类型
         },
