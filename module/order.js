@@ -22,6 +22,9 @@ module.exports = db.sequelize.define(
         destory: {
             type: Sequelize.STRING, // 字符串
         },
+        price: {
+            type: Sequelize.DECIMAL,
+        },
         amount: {
             type: Sequelize.INTEGER, // int类型
         },
@@ -35,6 +38,9 @@ module.exports = db.sequelize.define(
         status: {
             type: Sequelize.INTEGER,
             defaultValue: 0
+        },
+        imgUrl: {
+            type: Sequelize.STRING,
         },
         // 创建时间
         createTime: {

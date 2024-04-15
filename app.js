@@ -18,6 +18,7 @@ var shopRouter = require('./routes/shop');
 var FinanceRouter = require('./routes/finance');
 // 头像
 var AvatarRouter = require('./routes/avatar');
+var BalanceRouter = require('./routes/balance');
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/', OrderRouter);
 app.use('/', afterSaleRouter);
 app.use('/', shopRouter)
 app.use('/', FinanceRouter)
+app.use('/', BalanceRouter)
 // app.use('/login', loginRouter);
 // app.use('/register', registerRouter);
 // app.listen('8080')

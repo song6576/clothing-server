@@ -52,12 +52,13 @@ router.get('/login', async (req, res) => {
                 username,
                 // password
             },
-            attributes: ['role', 'iphone', 'password']
+            attributes: ['id','role', 'iphone', 'password']
         });
 
         if (user) {
             if (password === user.password) {
                 const data = {
+                    id: user.id,
                     username,
                     password,
                     role: user.role,
@@ -78,25 +79,30 @@ router.get('/login', async (req, res) => {
 
 // 查询所有用户表
 router.post('/user', async (req, res) => {
-    console.log(req.body)
-    // const users = await User.findAll()
-    // res.send({"status":"1","msg":"查询成功","data":{
-    //   users
-    // }})
-    // const usersObj = Object.assign(...users)
-    // console.log(usersObj.dataValues)
     User.findAll().then(data => {
         res.send({ status: 200, msg: '查询成功', data })
     }).catch(err => res.send("error:" + err))
 })
 
+// 根据条件查询，比如用户名称
+// router.post('/reqUserByNameData', async (req, res) => {
+//     User.findAll({
+//         where: {
+//             username: req.query.username
+//         }
+//     })
+//         .then(data => {
+//             res.send({ code: 200, msg: '查询成功!', data })
+//         })
+// })
+
 // 添加用户
 router.get('/adduser', (req, res) => {
-    console.log("🚀 ~ file: index.js:79 ~ req,res:", req, res)
     const now = new Date()
     const userData = {
         username: req.query.username,
         password: req.query.password,
+        imgUrl: req.query.imgUrl,
         role: '普通用户',
         iphone: req.query.iphone,
         created: now
@@ -134,11 +140,23 @@ router.post('/updateUser', async (req, res) => {
         post.update({
             username: req.query.username,
             password: req.query.password,
+            imgUrl: req.query.imgUrl,
             role: req.query.role,
             iphone: req.query.iphone,
         });
     });
     res.send({ status: 200, msg: '用户更新成功！', content })
+})
+
+router.post('/reqUserByNameData', async (req, res) => {
+    User.findAll({
+        where: {
+            username: req.query?.username
+        }
+    })
+        .then(data => {
+            res.send({ code: 200, msg: '查询成功!', data })
+        })
 })
 
 module.exports = router;

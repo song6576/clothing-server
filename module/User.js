@@ -25,6 +25,9 @@ module.exports = db.sequelize.define(
     password: {
       type:Sequelize.STRING, // 字符串
     },
+    imgUrl: {
+        type: Sequelize.STRING, // 字符串
+    },
     // 创建时间
     created: {
       type:Sequelize.DATE,
