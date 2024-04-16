@@ -15,6 +15,7 @@ module.exports = db.sequelize.define(
         },
         username: {
             type: Sequelize.STRING, // 字符串
+            primaryKey: true, // 主键
         },
         amount: {
             type: Sequelize.STRING,

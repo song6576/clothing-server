@@ -19,12 +19,35 @@ function formatDate(date) {
 
 // 添加
 router.post('/addBalance', async (req, res) => {
-    const content = await balance.create({
-        username: req.query.username,
-        amount: req.query.amount,
-        createTime: formatDate(new Date()),
-    })
-    res.send({ code: 200, msg: '添加成功!', content })
+    try {
+        const { username, amount } = req.query;
+
+        // 查询数据库，看是否已存在该用户的余额记录
+        let existingBalance = await balance.findAll({
+            where: {
+                username: req.query.username
+            }
+        })
+
+        if (existingBalance.length > 0) {
+            // 如果已存在该用户的记录，则更新现有记录的金额
+            existingBalance[0].amount = parseFloat(existingBalance[0].amount) + parseFloat(amount);
+            await existingBalance[0].save();
+            res.send({ code: 200, msg: '充值成功！', content: existingBalance[0] });
+        } else {
+            // 如果不存在该用户的记录，则新增一条记录
+            const newBalance = await balance.create({
+                username: username,
+                amount: amount,
+                createTime: formatDate(new Date()),
+            });
+            res.send({ code: 200, msg: '充值成功！', content: newBalance });
+        }
+    } catch (error) {
+        // 错误处理
+        console.error("Error:", error);
+        res.status(500).send({ code: 500, msg: '服务器内部错误' });
+    }
 })
 
 // 查询
@@ -59,15 +82,33 @@ router.post('/delBalance', (req, res) => {
 })
 
 // 修改
-router.post('/updateBalance', async (req, res) => {
-    const content = await balance.findByPk(req.query.id).then(post => {
-        post.update({
-            amount: req.query.amount,
-            createTime: formatDate(new Date())
-        })
-    })
-    res.send({ code: 200, msg: '修改成功!', content })
-})
+// router.post('/updateBalance', async (req, res) => {
+//     const content = await balance.findByPk(req.query.id).then(post => {
+//         post.update({
+//             amount: req.query.amount,
+//             createTime: formatDate(new Date())
+//         })
+//     })
+//     res.send({ code: 200, msg: '修改成功!', content })
+// })
 
+router.post('/updateBalance', async (req, res) => {
+    try {
+        const { username, amount } = req.query;
+        const content = await balance.findAll({
+            where: {
+                username: username
+            }
+        })
+        if (content.length > 0) {
+            content[0].amount = parseFloat(amount);
+            await content[0].save();
+            res.send({ code: 200, msg: '充值成功！', content: content[0] });
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send({ code: 500, msg: '服务器内部错误' });
+    }
+})
 
 module.exports = router;
