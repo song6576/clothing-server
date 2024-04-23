@@ -148,6 +148,16 @@ router.post('/updateUser', async (req, res) => {
     res.send({ status: 200, msg: '用户更新成功！', content })
 })
 
+// 修改密码
+router.post('/updateUserPassword', async (req, res) => {
+    const content = await User.findByPk(req.query.id).then(function (post) {
+        post.update({
+            password: req.query.password,
+        });
+    });
+    res.send({ status: 200, msg: '用户密码修改成功！', content })
+})
+
 router.post('/reqUserByNameData', async (req, res) => {
     User.findAll({
         where: {
